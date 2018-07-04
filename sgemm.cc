@@ -56,11 +56,12 @@ int main(int argc, char* argv[])
     if (argc >= 7) hz = (float)atof(argv[6]); 
     if (argc >= 8) fpc = atoi(argv[7]); 
 
+    // Colmajor
     char transa='N';
     char transb='N';
     lda = m;
     ldb = k;
-    ldc = n;
+    ldc = m;
 
 #ifdef MKL
     A = (FLOAT_TYPE*) mkl_malloc(sizeof(FLOAT_TYPE)*lda*k, MKL_MEM_ALIGNMENT);

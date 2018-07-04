@@ -1,2 +1,2 @@
-sgemm_smm
-sgemm_mkl
+xsmm_sgemm
+mkl_sgemm
