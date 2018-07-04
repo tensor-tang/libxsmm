@@ -126,8 +126,8 @@ int main(int argc, char* argv[])
     double avg_time_us = total_time_us/(double)LOOP_COUNT;
     double time_avg = avg_time_us/1000000;
        
-    printf ("m=%d,n=%d,k=%d cores=%d gflop=%.5f peak=%.5f efficiency=%.5f time_us=%.5f\n",
-        m, n, k, cores, gflop / time_avg, (hz * fpc * cores), (gflop / time_avg) / (hz * fpc * cores), avg_time_us);
+    printf ("m=%d,n=%d,k=%d time_us=%.5f\n",
+        m, n, k, avg_time_us);
     }
 	//double gflop = (2.0*m*n*k + 1.0*m*n)*1E-9;
 /*
