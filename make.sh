@@ -1,8 +1,13 @@
-# make libxsmm
-# make CC=gcc WARP=1
+#!/bin/bash
 
 SMM_ROOT=/home/tangjian/libxsmm
 MKL_ROOT=/home/tangjian/compilers_and_libraries_2018.2.199
+
+# make libxsmm
+cd ${SMM_ROOT}
+make CC=gcc WARP=1
+cd -
+
 # make libxsmm
 gcc sgemm.cc -I${SMM_ROOT}/include ${SMM_ROOT}/lib/libxsmm.a ${SMM_ROOT}/lib/libxsmmnoblas.a -ldl -lrt -lpthread -lm -lstdc++ -o xsmm_sgemm
 
