@@ -96,12 +96,12 @@ int main(int argc, char* argv[]) {
   int ldb = k;
   int ldc = m;
   libxsmm_sgemm(
-      &transa, &transb, &m, &n, &k, &alpha, (float*)A, &lda, (float*)B, &ldb, &beta, (float*)C, &ldc);
+      &transa, &transb, &n, &m, &k, &alpha, (float*)B, &ldb, (float*)A, &lda, &beta, (float*)C, &ldc);
 
   gettimeofday(&start_time, NULL);
   for (int i = 0; i < LOOP_COUNT; ++i) {
     libxsmm_sgemm(
-        &transa, &transb, &m, &n, &k, &alpha, (float*)A, &lda, (float*)B, &ldb, &beta, (float*)C, &ldc);
+        &transa, &transb, &n, &m, &k, &alpha, (float*)B, &ldb, (float*)A, &lda, &beta, (float*)C, &ldc);
   }
   gettimeofday(&end_time, NULL);
 #endif
