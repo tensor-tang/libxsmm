@@ -5,7 +5,7 @@ MKL_ROOT=/home/tangjian/compilers_and_libraries_2018.2.199
 
 # make libxsmm
 cd ${SMM_ROOT}
-make CC=gcc WARP=1
+make CXX=g++ CC=gcc WARP=1
 cd -
 
 # make libxsmm
