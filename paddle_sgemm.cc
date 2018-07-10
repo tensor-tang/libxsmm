@@ -1,5 +1,5 @@
-#include <stdio.h>  // for printf
 #include <assert.h>
+#include <stdio.h>   // for printf
 #include <stdlib.h>  // for malloc and free
 #include <sys/time.h>
 #ifdef MKL
@@ -48,60 +48,60 @@ int main(int argc, char* argv[]) {
   }
 
   struct timeval start_time, end_time;
-#ifdef MKL
   bool transA = false;
   bool transB = false;
   int lda = transA == false ? k : m;
   int ldb = transB == false ? n : k;
   int ldc = n;
-  // buring time
-  cblas_sgemm(CblasRowMajor,
-              transA == false ? CblasNoTrans : CblasTrans,
-              transB == false ? CblasNoTrans : CblasTrans,
-              m,
-              n,
-              k,
-              alpha,
-              (float*)A,
-              lda,
-              (float*)B,
-              ldb,
-              beta,
-              (float*)C,
-              ldc);
+#ifdef MKL
+// buring time
+#define mkl_sgemm                                          \
+  cblas_sgemm(CblasRowMajor,                               \
+              transA == false ? CblasNoTrans : CblasTrans, \
+              transB == false ? CblasNoTrans : CblasTrans, \
+              m,                                           \
+              n,                                           \
+              k,                                           \
+              alpha,                                       \
+              (float*)A,                                   \
+              lda,                                         \
+              (float*)B,                                   \
+              ldb,                                         \
+              beta,                                        \
+              (float*)C,                                   \
+              ldc)
 
+  mkl_sgemm;
   gettimeofday(&start_time, NULL);
   for (int i = 0; i < LOOP_COUNT; ++i) {
-    cblas_sgemm(CblasRowMajor,
-                transA == false ? CblasNoTrans : CblasTrans,
-                transB == false ? CblasNoTrans : CblasTrans,
-                m,
-                n,
-                k,
-                alpha,
-                (float*)A,
-                lda,
-                (float*)B,
-                ldb,
-                beta,
-                (float*)C,
-                ldc);
+    mkl_sgemm;
   }
   gettimeofday(&end_time, NULL);
 #else
   // Colmajor
+  assert(transA == false);
+  assert(transB == false);
   char transa = 'N';
   char transb = 'N';
-  int lda = m;
-  int ldb = k;
-  int ldc = m;
-  libxsmm_sgemm(
-      &transa, &transb, &n, &m, &k, &alpha, (float*)B, &ldb, (float*)A, &lda, &beta, (float*)C, &ldc);
+#define xmm_sgemm          \
+  libxsmm_sgemm(&transa,   \
+                &transb,   \
+                &n,        \
+                &m,        \
+                &k,        \
+                &alpha,    \
+                (float*)B, \
+                &ldb,      \
+                (float*)A, \
+                &lda,      \
+                &beta,     \
+                (float*)C, \
+                &ldc)
 
+  xmm_sgemm;
   gettimeofday(&start_time, NULL);
   for (int i = 0; i < LOOP_COUNT; ++i) {
-    libxsmm_sgemm(
-        &transa, &transb, &n, &m, &k, &alpha, (float*)B, &ldb, (float*)A, &lda, &beta, (float*)C, &ldc);
+    xmm_sgemm;
   }
   gettimeofday(&end_time, NULL);
 #endif
