@@ -13,6 +13,19 @@ mkl_sgemm is faster than paddle_mkl_sgemm, becasue mkl_sgemm use direct call and
 
 While paddle_xsmm_sgemm and xsmm_sgemm should have same speed.
 
+CPU     | TEST CASE(m,n,k) | Before(us) | After(us) | Boost(Before/After)
+:------ | :--------------- | :--------- | :-------- | :------------------
+2620 v2 | 1，5，8            | 0.149      | 0.068     | 2.19 X
+2620 v2 | 8，5，8            | 0.204      | 0.127     | 1.61 X
+2620 v2 | 8，5，151          | 4.173      | 1.333     | 3.13 X
+5117    | 1，5，8            | 0.151      | 0.089     | 1.70 X
+5117    | 8，5，8            | 0.337      | 0.135     | 2.50 X
+5117    | 8，5，151          | 1.166      | 1.062     | 1.10 X
+6148    | 1，5，8            | 0.094      | 0.055     | 1.71 X
+6148    | 8，5，8            | 0.216      | 0.082     | 2.63 X
+6148    | 8，5，151          | 0.633      | 0.430     | 1.47 X
+
+
 ## 2620 v2
 ```
 m,n,k: 1, 3, 8
