@@ -25,6 +25,9 @@ with open(filename) as f:
         match_mkl = re.match(pattern_mkl, line)
         match_smm = re.match(pattern_smm, line)
         if match_mkl:
+            if match_mkl.group(4) is None:
+                continue
+            assert match_mkl.group(4) != '0'
             #print match_mkl.groups()
             m = int(match_mkl.group(1)) -1
             n = int(match_mkl.group(2)) -1
@@ -33,6 +36,9 @@ with open(filename) as f:
             res['mkl'][k][m][n] = us
             maxk = k if k > maxk else maxk
         if match_smm:
+            if match_smm.group(4) is None:
+                continue
+            assert match_smm.group(4) != '0'
             #print match_smm.groups()
             m = int(match_smm.group(1)) -1
             n = int(match_smm.group(2)) -1
@@ -44,15 +50,18 @@ with open(filename) as f:
 #print res['smm'][0]
 #print res['mkl'][0]
 
-print res['mkl'][0] / res['smm'][0] - 1.0
+for k in range(maxk):
+    res_k = res['mkl'][k] / res['smm'][k] - 1.0
+    print "K[m=0]:", k
+    print res_k[0]
 
-fig = plt.figure()
-ax = Axes3D(fig)
-X = np.arange(1, 201)
-Y = np.arange(1, 201)
-X, Y = np.meshgrid(X, Y)
-Z = res['mkl'][0] / res['smm'][0] - 1.0
- 
-ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='rainbow')
-
-plt.show()
+    fig = plt.figure(k)
+    ax = Axes3D(fig)
+    X = np.arange(1, 201)
+    Y = np.arange(1, 201)
+    X, Y = np.meshgrid(X, Y)
+    Z = res['mkl'][0] / res['smm'][0] - 1.0
+     
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='rainbow')
+    
+    plt.show()
