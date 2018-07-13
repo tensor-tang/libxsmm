@@ -4,9 +4,9 @@ function compare() {
   m=$1
   n=$2
   k=$3
-  echo m,n,k: $m, $n, $k
-  echo -e "mkl version \t\c"; ./mkl_sgemm $m $n $k $loop
-  echo -e "smm version \t\c"; ./xsmm_sgemm $m $n $k $loop
+#  echo m,n,k: $m, $n, $k
+#  echo -e "mkl version \t\c"; ./mkl_sgemm $m $n $k $loop
+#  echo -e "smm version \t\c"; ./xsmm_sgemm $m $n $k $loop
   echo -e "paddle mkl version \c"; ./paddle_mkl_sgemm $m $n $k $loop
   echo -e "paddle smm version \c"; ./paddle_xsmm_sgemm $m $n $k $loop
 }
@@ -25,13 +25,13 @@ compare 8 4 151
 compare 8 5 151
 
 # skip below test
-exit 0
+# exit 0
 
-for m in {1..20..8}
+for k in {1..200..1}
 do
-  for n in {1..10}
+  for m in {1..200}
   do
-    for k in {8..100..20}
+    for n in {1..200..1}
     do
       compare $m $n $k
     done
